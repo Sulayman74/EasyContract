@@ -17,6 +17,8 @@ const deleteSociety = require("../controllers/users/delete-controller");
 //** mise à jour des données */
 const updateWorker = require("../controllers/users/update-controller")
 const updateSociety = require("../controllers/users/update-controller")
+//** hash mdp */
+const hashPassword = require("../controllers/users/login-register")
 
 userRouter.get("/allUsers", getAllUsers.getAllUsers);
 userRouter.get("/oneWorker/:id",  getWorker.getWorker)
@@ -30,5 +32,7 @@ userRouter.delete("/deleteSociety/:id", deleteSociety.deleteSociety)
 
 userRouter.put("/updateWorker/:id", updateWorker.updateWorker)
 userRouter.put("/updateSociety/:id", updateSociety.updateSociety)
+
+userRouter.post("/login", )
 
 module.exports = userRouter; 

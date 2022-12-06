@@ -1,41 +1,69 @@
 const pool = require("../../config");
-
-
+const bcrypt = require("bcrypt")
+const validator = require("validator")
+const isEmail = validator
 
 
 //** Add a Worker */
 
 exports.addWorker = async (req, res) => {
+
+    //? hash password */
+    // const { mdp } = req.body
+
+    // let saltRounds = 13
+
+    // let password = await pool.query("SELECT mdp FROM salarie WHERE mdp=$1", [mdp])
+    // console.log(password);
+
+    // const hashedPassword = await bcrypt.hash(password, saltRounds, function (err, hash) {
+    //     if (err) {
+    //         return err
+    //     }
+    //     try {
+    //         "INSERT INTO salarie (mdp) VALUES ($1) RETURNING mdp", [mdp]
+    //     } catch (error) {
+    //         console.error(error.messsage);
+    //     }
+    //     return hashedPassword
+    // })
+    // console.log(hashedPassword);
+
     //! Je vérifie si mon salarié existe par son email qui est unique */
 
     const { email } = req.body
 
     let worker = await pool.query("SELECT email FROM salarie WHERE email=$1", [email])
-
-    if (worker !== null) {
+    console.log(worker);
+    if (worker.rowCount !== 0) {
+        
         console.log("Can not add this worker");
         res.status(401).json({ "email": email, "message": "email already exists" })
         return false
+    }else {
+ //** Ensuite je créé s'il n'existe pas */
+ try {
+
+    const { civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, role, nom_jeune_fille, num_ss, date_naissance, lieu_naissance, pays_naissance } = req.body;
+
+    const addWorker = await pool.query(
+        "INSERT INTO salarie (civilite,nom,prenom,telephone,rue,cp,ville,email,mdp,role,nom_jeune_fille,num_ss, date_naissance, lieu_naissance,pays_naissance) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15) RETURNING *",
+        [civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, role, nom_jeune_fille, num_ss, date_naissance, lieu_naissance, pays_naissance]
+    );
+    res.status(200).json({ "addAWorker": addWorker.rows[0] })
+
+
+} catch (error) {
+    console.error(error.message);
+
+}
     }
 
     //! ---------------------------------------------------- */
-    //** Ensuite je créé s'il n'existe pas */
-    try {
-
-        // console.log(req.body);
-        const { civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, role, nom_jeune_fille, num_ss, date_naissance, lieu_naissance, pays_naissance } = req.body;
-
-        const addWorker = await pool.query(
-            "INSERT INTO salarie (civilite,nom,prenom,telephone,rue,cp,ville,email,mdp,role,nom_jeune_fille,num_ss, date_naissance, lieu_naissance,pays_naissance) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15) RETURNING *",
-            [civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, role, nom_jeune_fille, num_ss, date_naissance, lieu_naissance, pays_naissance]
-        );
-        res.status(200).json({ "addAWorker": addWorker.rows[0] })
 
 
-    } catch (error) {
-        console.error(error.message);
 
-    }
+   
 
 }
 
@@ -49,12 +77,12 @@ exports.addSociety = async (req, res) => {
     console.log(siret, email);
     let society = await pool.query("SELECT siret,email FROM entreprise WHERE siret=$1 AND email=$2", [siret, email])
 
-    if (society !== null) {
+    if (society.rowCount !== 0) {
         console.log("Can not add this society");
         res.status(400).json({ "siret": siret, "email": email, "message": "society already exists" })
         return false
     }
-  //! ---------------------------------------------------- */
+    //! ---------------------------------------------------- */
     //** Ensuite je créé s'il n'existe pas */
 
     try {
@@ -66,7 +94,7 @@ exports.addSociety = async (req, res) => {
             "INSERT INTO entreprise (civilite,nom,prenom,telephone,rue,cp,ville,email,mdp,role,siret,raison_sociale,code_ape) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) RETURNING *",
             [civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, role, siret, raison_sociale, code_ape]
         );
-        res.status(200).json({"addASociety": addSociety.rows[0]})
+        res.status(200).json({ "addASociety": addSociety.rows[0] })
         console.log('A Society has been added correctly', req.body);
 
     } catch (error) {
