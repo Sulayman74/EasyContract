@@ -8,7 +8,7 @@ exports.getOne = async(req,res)=>{
         const getOne = await pool.query(
             "SELECT contrat_id FROM contrat WHERE contrat_id=$1",[id]
         )
-        res.status(200).json({"message":getOne})
+        res.status(200).json({"message":`You have chosen this contrat$ ${id}`, "the contract":getOne})
     } catch (error) {
         console.error(error.message);
     }

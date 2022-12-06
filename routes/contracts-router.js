@@ -3,13 +3,16 @@ const contractRouter = express.Router();
 
 const addContract = require("../controllers/contracts/add-controller");
 const deleteContract = require("../controllers/contracts/delete-controller");
+
 const getContracts = require("../controllers/contracts/get-all")
 const getOne = require("../controllers/contracts/get-one")
+const getSpecial = require("../controllers/contracts/get-special");
 
 contractRouter.get("/allContracts", getContracts.getAll);
-contractRouter.get("/oneContract", getOne.getOne);
+contractRouter.get("/oneContract/:id", getOne.getOne);
+contractRouter.get("/oneSpecial", getSpecial.getSpecial)
 
-contractRouter.post("/create", addContract.addContract);
+contractRouter.post("/createContract", addContract.addContract);
 
 contractRouter.delete("/delete/:id", deleteContract.deleteContract);
 
