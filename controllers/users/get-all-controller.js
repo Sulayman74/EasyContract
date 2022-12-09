@@ -6,7 +6,7 @@ exports.getAllWorkers = async (req, res) => {
 
   try {
     const AllWorkers = await pool.query(
-      "SELECT utilisateur.* FROM utilisateur WHERE utilisateur.role = false"
+      " SELECT utilisateur.*, salarie.salarie_id FROM utilisateur, salarie WHERE utilisateur.role = false AND utilisateur.utilisateur_id = salarie.utilisateur_id "
     );
     res.status(200).json({ "myUsers": AllWorkers.rows });
     // console.warn("get request", allUsers);
@@ -22,7 +22,7 @@ exports.getAllSocieties = async (req, res) => {
 
   try {
     const allSocieties = await pool.query(
-      "SELECT utilisateur.* FROM utilisateur WHERE utilisateur.role = true"
+      "SELECT utilisateur.*,  entreprise.entreprise_id FROM utilisateur, entreprise WHERE utilisateur.role = true AND utilisateur.utilisateur_id = entreprise.utilisateur_id"
     );
     res.status(200).json({ "myUsers": allSocieties.rows });
     // console.warn("get request", allUsers);
