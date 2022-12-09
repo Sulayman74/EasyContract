@@ -9,11 +9,24 @@ exports.updateWorker = async (req, res) => {
 
     //! Je vérifie si mon salarié existe par son email qui est unique */
 
+    const { id } = req.params
     const { email } = req.body
 
-    let worker = await pool.query("SELECT email FROM salarie WHERE email=$1", [email])
+    try {
+        let emailExist = await pool.query("SELECT email FROM salarie WHERE email=$1 AND salarie_id<>$2", [email, id]);
+        console.log(id, email);
+        if (emailExist.rowCount !== 0) {
+            res.status(400).json({ "message": "cet email est déjà utilisé" })
+            return false
+        }
+    } catch (error) {
+        console.error(error.message);
+        res.status(400).send(error.message)
+    }
+
 
     //** Je verifie le format de l'email via validator et isEmail */
+
     if (!isEmail(email)) {
         console.log("invalid email");
         res.status(402).json({ "email": email, "message": "invalid email" })
@@ -37,6 +50,7 @@ exports.updateWorker = async (req, res) => {
 
         } catch (error) {
             console.error(error.message);
+            res.status(400).send(error.message)
         }
     }
 }
@@ -44,6 +58,23 @@ exports.updateWorker = async (req, res) => {
 //** Update a society */
 
 exports.updateSociety = async (req, res) => {
+
+    const { id } = req.params
+    const { email } = req.body
+
+
+    try {
+        let emailExist = await pool.query("SELECT email FROM entreprise WHERE email=$1 AND entreprise_id<>$2", [email, id]);
+        console.log(id, email);
+        if (emailExist.rowCount !== 0) {
+            res.status(400).json({ "message": "cet email est déjà utilisé" })
+            return false
+        }
+    } catch (error) {
+        console.error(error.message);
+        res.status(400).send(error.message)
+    }
+
 
     try {
         const { id } = req.params
@@ -56,5 +87,6 @@ exports.updateSociety = async (req, res) => {
 
     } catch (error) {
         console.error(error.message);
+        res.status(400).send(error.message)
     }
 }

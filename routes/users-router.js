@@ -1,11 +1,17 @@
 const express = require('express');
 const userRouter = express.Router();
 
-//** ajout de users/register/login */
+//! ajout de users/register/login */
+
+//** salariés */
 const addWorker = require("../controllers/users/add-controller");
 const registerWorker = require("../controllers/users/register-controllers");
+const loginWorker = require("../controllers/users/login-controllers")
+
+//** entreprises */
 const addSociety = require("../controllers/users/add-controller");
 const registerSociety = require("../controllers/users/register-controllers")
+
 //** recherche de tous les users ou d'un seul en particulier par son id */
 const getAllUsers= require("../controllers/users/get-all-controller");
 const getaWorker = require("../controllers/users/get-one-controller");
@@ -38,8 +44,9 @@ userRouter.get("/workers", getWorkers.getAllWorkers);
 userRouter.get("/societies", getSocieties.getAllSocieties);
 
 //** worker add register login */
-userRouter.post("/registerWorker", registerWorker.registerWorker);
 userRouter.post("/createWorker", addWorker.addWorker);
+userRouter.post("/registerWorker", registerWorker.registerWorker);
+userRouter.post("/loginWorker", loginWorker.loginSalarie)
 
 //** society add register login */
 userRouter.post("/registerSociety", registerSociety.registerSociety)
