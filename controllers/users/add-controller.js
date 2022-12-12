@@ -4,7 +4,7 @@ const pool = require("../../config");
 const bcrypt = require("bcrypt")
 const validator = require("validator")
 const { isEmail } = validator;
-
+const {jwtTokens} = require('../../helpers/auth_helper')
 
 //** Add a Worker */
 
@@ -37,17 +37,22 @@ exports.addWorker = async (req, res) => {
             //** ---- hash du mot de passe via bcrypt */
 
             let { mdp } = req.body;
-            const saltRounds = 12;
+            const saltRounds = 12
             let hash = await bcrypt.hash(mdp, saltRounds);
             mdp = hash
 
+            const worker = { email: req.body.email, utilisateur_id: req.body.utilisateur_id, role: req.body.role }
+            // TODO ------------- le JWT --------------------- //
+    
+            let tokens = jwtTokens(worker)
+        
             const addWorker = await pool.query(
                 "INSERT INTO salarie (civilite,nom,prenom,telephone,rue,cp,ville,email,mdp,role,nom_jeune_fille,num_ss, date_naissance, lieu_naissance,pays_naissance) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15) RETURNING *",
                 [civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, role, nom_jeune_fille, num_ss, date_naissance, lieu_naissance, pays_naissance]
             );
 
 
-            res.status(200).json({ "addAWorker": addWorker.rows[0] })
+            res.status(200).json({ "addAWorker": addWorker.rows[0],"tokens": tokens, "datas": worker, message: "A worker has been added" })
 
 
         } catch (error) {
@@ -97,12 +102,16 @@ exports.addSociety = async (req, res) => {
         let hash = await bcrypt.hash(mdp, saltRounds);
         mdp = hash
 
+        const society = { email: req.body.email, utilisateur_id: req.body.utilisateur_id, role: req.body.role }
+        // TODO ------------- le JWT --------------------- //
+
+        let tokens = jwtTokens(society)
+  
         const addSociety = await pool.query(
             "INSERT INTO entreprise (civilite,nom,prenom,telephone,rue,cp,ville,email,mdp,role,siret,raison_sociale,code_ape) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) RETURNING *",
             [civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, role, siret, raison_sociale, code_ape]
         );
-        res.status(200).json({ "addASociety": addSociety.rows[0] })
-        console.log('A Society has been added correctly', req.body);
+        res.status(200).json({ "addASociety": addSociety.rows[0], "tokens": tokens, "datas": society, message: "A Society has been added correctly" })
 
     } catch (error) {
         console.error(error.message);

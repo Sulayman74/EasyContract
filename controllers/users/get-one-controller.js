@@ -3,6 +3,7 @@
 const pool = require("../../config")
 
 exports.getWorker = async (req,res)=> {
+    
     try {
 
         const {id} = req.params

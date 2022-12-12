@@ -2,8 +2,9 @@
 
 const pool = require("../../config");
 const bcrypt = require("bcrypt")
-const validator = require("validator")
+const validator = require("validator");
 const { isEmail } = validator;
+const {jwtTokens} = require("../../helpers/auth_helper")
 
 exports.registerWorker = async (req, res) => {
 
@@ -38,11 +39,16 @@ exports.registerWorker = async (req, res) => {
             let hash = await bcrypt.hash(mdp, saltRounds);
             mdp = hash
 
+            const worker = { email: req.body.email, utilisateur_id: req.body.utilisateur_id, role: req.body.role }
+            // TODO ------------- le JWT --------------------- //
+    
+            let tokens = jwtTokens(worker)
+
             const registerWorker = await pool.query(
                 "INSERT INTO salarie (civilite,nom,prenom,telephone,rue,cp,ville,email,mdp,role,nom_jeune_fille,num_ss, date_naissance, lieu_naissance,pays_naissance) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15) RETURNING *",
                 [civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, role, nom_jeune_fille, num_ss, date_naissance, lieu_naissance, pays_naissance]
             );
-            res.status(200).json({ "registerAWorker": registerWorker.rows[0] })
+            res.status(200).json({ "registerAWorker": registerWorker.rows[0], "token":tokens, "datas":worker, message : " A worker has beenn registered" })
 
         } catch (error) {
             console.error(error.message);

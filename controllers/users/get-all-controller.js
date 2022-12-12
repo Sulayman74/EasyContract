@@ -2,6 +2,7 @@
 
 const pool = require("../../config");
 
+
 exports.getAllWorkers = async (req, res) => {
 
   try {
@@ -13,7 +14,6 @@ exports.getAllWorkers = async (req, res) => {
   } catch (error) {
     console.error(error.message);
   }
-
 };
 
 //** get all society */

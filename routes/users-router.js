@@ -10,7 +10,8 @@ const loginWorker = require("../controllers/users/login-controllers")
 
 //** entreprises */
 const addSociety = require("../controllers/users/add-controller");
-const registerSociety = require("../controllers/users/register-controllers")
+const registerSociety = require("../controllers/users/register-controllers");
+const loginSociety = require("../controllers/users/login-controllers")
 
 //** recherche de tous les users ou d'un seul en particulier par son id */
 const getAllUsers= require("../controllers/users/get-all-controller");
@@ -26,12 +27,26 @@ const deleteSociety = require("../controllers/users/delete-controller");
 
 //** mise à jour des données */
 const updateWorker = require("../controllers/users/update-controller")
-const updateSociety = require("../controllers/users/update-controller")
+const updateSociety = require("../controllers/users/update-controller");
+const authenticateToken = require('../middleware/auth');
 
 // ! ------------------------------------------------ */
 
+// TODO ------ les routes sans verification de Token ----- */
+
+//** worker register login */
+userRouter.post("/loginWorker", loginWorker.loginSalarie)
+userRouter.post("/registerWorker", registerWorker.registerWorker);
+
+//** society register login */
+userRouter.post("/loginSociety", loginSociety.loginSociety)
+userRouter.post("/registerSociety", registerSociety.registerSociety)
+
+// TODO --------- routes qui ont besoin du token pour y accéder ------- */
+
+
 //** All the users route */
-userRouter.get("/allUsers", getAllUsers.getAllUsers);
+userRouter.get("/allUsers",authenticateToken,  getAllUsers.getAllUsers);
 
 //** Users by Id  */
 userRouter.get("/oneWorker/:id",  getaWorker.getWorker);
@@ -43,11 +58,8 @@ userRouter.get("/workers", getWorkers.getAllWorkers);
 //** All the societies */
 userRouter.get("/societies", getSocieties.getAllSocieties);
 
-//** worker add register login */
+//** worker add */
 userRouter.post("/createWorker", addWorker.addWorker);
-userRouter.post("/registerWorker", registerWorker.registerWorker);
-userRouter.post("/loginWorker", loginWorker.loginSalarie)
-
 //** society add register login */
 userRouter.post("/registerSociety", registerSociety.registerSociety)
 userRouter.post("/createSociety", addSociety.addSociety);
@@ -60,6 +72,5 @@ userRouter.delete("/deleteSociety/:id", deleteSociety.deleteSociety)
 userRouter.put("/updateWorker/:id", updateWorker.updateWorker)
 userRouter.put("/updateSociety/:id", updateSociety.updateSociety)
 
-// userRouter.post("/login", )
 
 module.exports = userRouter; 

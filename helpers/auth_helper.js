@@ -1,7 +1,18 @@
-const SECRET = "0987654321"
+
 const jwt = require("jsonwebtoken")
 
-function verifyToken(req, res, next){
+
+
+function jwtTokens({ email, utilisateur_id, role }) {
+
+    const user = { email, utilisateur_id, role };
+    const accessToken = jwt.sign(user,process.env.ACCESS_TOKEN)
+    return accessToken
+}
+module.exports = {jwtTokens}
+
+
+function verifyToken(req, res, next) {
     let token = req.headers["authorization"];
 
     if (!token) {
@@ -20,4 +31,3 @@ function verifyToken(req, res, next){
     return next();
 }
 
-module.exports = verifyToken
