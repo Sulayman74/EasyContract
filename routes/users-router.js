@@ -46,31 +46,31 @@ userRouter.post("/registerSociety", registerSociety.registerSociety)
 
 
 //** All the users route */
-userRouter.get("/allUsers",authenticateToken,  getAllUsers.getAllUsers);
+userRouter.get("/allUsers",authenticateToken, getAllUsers.getAllUsers);
 
 //** Users by Id  */
-userRouter.get("/oneWorker/:id",  getaWorker.getWorker);
-userRouter.get("/oneSociety/:id",  getaSociety.getSociety);
+userRouter.get("/oneWorker/:id",authenticateToken,  getaWorker.getWorker);
+userRouter.get("/oneSociety/:id",authenticateToken,  getaSociety.getSociety);
 
 //** All the workers */
-userRouter.get("/workers", getWorkers.getAllWorkers);
+userRouter.get("/workers",authenticateToken, getWorkers.getAllWorkers);
 
 //** All the societies */
-userRouter.get("/societies", getSocieties.getAllSocieties);
+userRouter.get("/societies",authenticateToken, getSocieties.getAllSocieties);
 
 //** worker add */
-userRouter.post("/createWorker", addWorker.addWorker);
+userRouter.post("/createWorker",authenticateToken, addWorker.addWorker);
 //** society add register login */
-userRouter.post("/registerSociety", registerSociety.registerSociety)
-userRouter.post("/createSociety", addSociety.addSociety);
+userRouter.post("/registerSociety",authenticateToken, registerSociety.registerSociety)
+userRouter.post("/createSociety",authenticateToken, addSociety.addSociety);
 
 //** delete section */
-userRouter.delete("/deleteWorker/:id", deleteWorker.deleteWorker);
-userRouter.delete("/deleteSociety/:id", deleteSociety.deleteSociety)
+userRouter.delete("/deleteWorker/:id",authenticateToken, deleteWorker.deleteWorker);
+userRouter.delete("/deleteSociety/:id",authenticateToken, deleteSociety.deleteSociety)
 
 //** update section */
-userRouter.put("/updateWorker/:id", updateWorker.updateWorker)
-userRouter.put("/updateSociety/:id", updateSociety.updateSociety)
+userRouter.put("/updateWorker/:id",authenticateToken, updateWorker.updateWorker)
+userRouter.put("/updateSociety/:id",authenticateToken, updateSociety.updateSociety)
 
 
 module.exports = userRouter; 
