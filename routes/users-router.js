@@ -1,6 +1,7 @@
 const express = require('express');
 const userRouter = express.Router();
-
+const authenticateToken = require('../middleware/auth');
+const verifyToken = require('../middleware/auth')
 //! ajout de users/register/login */
 
 //** salariés */
@@ -28,7 +29,7 @@ const deleteSociety = require("../controllers/users/delete-controller");
 //** mise à jour des données */
 const updateWorker = require("../controllers/users/update-controller")
 const updateSociety = require("../controllers/users/update-controller");
-const authenticateToken = require('../middleware/auth');
+
 
 // ! ------------------------------------------------ */
 

@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt")
 const validator = require("validator")
 const { isEmail } = validator;
 const {jwtTokens} = require('../../helpers/auth_helper')
+const {StatusCodes} = require("http-status-codes");
 
 //** Add a Worker */
 
@@ -19,14 +20,14 @@ exports.addWorker = async (req, res) => {
     //** Je verifie le format de l'email via validator et isEmail */
     if (!isEmail(email)) {
         console.log("invalid email");
-        res.status(402).json({ "email": email, "message": "invalid email" })
+        res.status(StatusCodes.UNAUTHORIZED).json({ "email": email, "message": "invalid email" })
         return false
     }
 
     if (worker.rowCount !== 0) {
 
         console.log("Can not add this worker");
-        res.status(401).json({ "email": email, "message": "email already exists" })
+        res.status(StatusCodes.UNAUTHORIZED).json({ "email": email, "message": "email already exists" })
         return false
     } else {
         //** Ensuite je créé s'il n'existe pas */
@@ -52,11 +53,12 @@ exports.addWorker = async (req, res) => {
             );
 
 
-            res.status(200).json({ "addAWorker": addWorker.rows[0],"tokens": tokens, "datas": worker, message: "A worker has been added" })
+            res.status(StatusCodes.OK).json({ "addAWorker": addWorker.rows[0],"tokens": tokens, "datas": worker, message: "A worker has been added" })
 
 
         } catch (error) {
             console.error(error.message);
+            res.status(StatusCodes.BAD_REQUEST).json({ error: "Bad Request" })
 
         }
     }
@@ -77,14 +79,14 @@ exports.addSociety = async (req, res) => {
     //** Je verifie le format de l'email via validator et isEmail */
     if (!isEmail(email)) {
         console.log("invalid email");
-        res.status(402).json({ "email": email, "message": "invalid email" })
+        res.status(StatusCodes.UNAUTHORIZED).json({ "email": email, "message": "invalid email" })
         return false
     }
 
 
     if (society.rowCount !== 0) {
         console.log("Can not add this society");
-        res.status(400).json({ "siret": siret, "email": email, "message": "society already exists" })
+        res.status(StatusCodes.UNAUTHORIZED).json({ "siret": siret, "email": email, "message": "society already exists" })
         return false
     }
     //! ---------------------------------------------------- */
@@ -111,10 +113,11 @@ exports.addSociety = async (req, res) => {
             "INSERT INTO entreprise (civilite,nom,prenom,telephone,rue,cp,ville,email,mdp,role,siret,raison_sociale,code_ape) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) RETURNING *",
             [civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, role, siret, raison_sociale, code_ape]
         );
-        res.status(200).json({ "addASociety": addSociety.rows[0], "tokens": tokens, "datas": society, message: "A Society has been added correctly" })
+        res.status(StatusCodes.OK).json({ "addASociety": addSociety.rows[0], "tokens": tokens, "datas": society, message: "A Society has been added correctly" })
 
     } catch (error) {
         console.error(error.message);
+        res.status(StatusCodes.BAD_REQUEST).json({ error: "Bad Request" })
 
     }
 }

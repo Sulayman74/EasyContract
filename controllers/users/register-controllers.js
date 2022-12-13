@@ -4,7 +4,8 @@ const pool = require("../../config");
 const bcrypt = require("bcrypt")
 const validator = require("validator");
 const { isEmail } = validator;
-const {jwtTokens} = require("../../helpers/auth_helper")
+const { jwtTokens } = require("../../helpers/auth_helper");
+const { StatusCodes } = require('http-status-codes');
 
 exports.registerWorker = async (req, res) => {
 
@@ -17,20 +18,20 @@ exports.registerWorker = async (req, res) => {
     //** Je verifie le format de l'email via validator et isEmail */
     if (!isEmail(email)) {
         console.log("invalid email");
-        res.status(402).json({ "email": email, "message": "invalid email" })
+        res.status(StatusCodes.BAD_REQUEST).json({ "email": email, "message": "invalid email" })
         return false
     }
 
     if (worker.rowCount !== 0) {
 
         console.log("Can not add this worker");
-        res.status(401).json({ "email": email, "message": "email already exists" })
+        res.status(StatusCodes.UNAUTHORIZED).json({ "email": email, "message": "email already exists" })
         return false
     } else {
         //** Ensuite je créé s'il n'existe pas */
         try {
 
-            const { civilite, nom, prenom, telephone, rue, cp, ville, email, role, nom_jeune_fille, num_ss, date_naissance, lieu_naissance, pays_naissance } = req.body;
+            const { civilite, nom, prenom, telephone, rue, cp, ville, email, nom_jeune_fille, num_ss, date_naissance, lieu_naissance, pays_naissance } = req.body;
 
             //** ---- hash du mot de passe via bcrypt */
 
@@ -41,17 +42,18 @@ exports.registerWorker = async (req, res) => {
 
             const worker = { email: req.body.email, utilisateur_id: req.body.utilisateur_id, role: req.body.role }
             // TODO ------------- le JWT --------------------- //
-    
+
             let tokens = jwtTokens(worker)
 
             const registerWorker = await pool.query(
-                "INSERT INTO salarie (civilite,nom,prenom,telephone,rue,cp,ville,email,mdp,role,nom_jeune_fille,num_ss, date_naissance, lieu_naissance,pays_naissance) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15) RETURNING *",
-                [civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, role, nom_jeune_fille, num_ss, date_naissance, lieu_naissance, pays_naissance]
+                "INSERT INTO salarie (civilite,nom,prenom,telephone,rue,cp,ville,email,mdp,nom_jeune_fille,num_ss, date_naissance, lieu_naissance,pays_naissance) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14) RETURNING *",
+                [civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, nom_jeune_fille, num_ss, date_naissance, lieu_naissance, pays_naissance]
             );
-            res.status(200).json({ "registerAWorker": registerWorker.rows[0], "token":tokens, "datas":worker, message : " A worker has beenn registered" })
+            res.status(StatusCodes.OK).json({ "registerAWorker": registerWorker.rows[0], "token": tokens, "datas": worker, message: " A worker has beenn registered" })
 
         } catch (error) {
             console.error(error.message);
+            res.status(StatusCodes.BAD_REQUEST).json({ error: "Bad Request" })
 
         }
     }
@@ -75,13 +77,13 @@ exports.registerSociety = async (req, res) => {
     //** Je verifie le format de l'email via validator et isEmail */
     if (!isEmail(email)) {
         console.log("invalid email");
-        res.status(402).json({ "email": email, "message": "invalid email" })
+        res.status(StatusCodes.BAD_REQUEST).json({ "email": email, "message": "invalid email" })
         return false
     }
 
     if (society.rowCount !== 0) {
         console.log("Can not add this society");
-        res.status(400).json({ "siret": siret, "email": email, "message": "society already exists" })
+        res.status(StatusCodes.BAD_REQUEST).json({ "siret": siret, "email": email, "message": "society already exists" })
         return false
     }
     //! ---------------------------------------------------- */
@@ -90,7 +92,7 @@ exports.registerSociety = async (req, res) => {
     try {
 
 
-        const { civilite, nom, prenom, telephone, rue, cp, ville, email, role, siret, raison_sociale, code_ape } = req.body;
+        const { civilite, nom, prenom, telephone, rue, cp, ville, email, siret, raison_sociale, code_ape } = req.body;
 
         //** ---- hash du mot de passe via bcrypt */
         const saltRounds = 12;
@@ -98,16 +100,21 @@ exports.registerSociety = async (req, res) => {
         let hash = await bcrypt.hash(mdp, saltRounds);
         mdp = hash
 
+        const society = { email: req.body.email, utilisateur_id: req.body.utilisateur_id, role: req.body.role }
+        // TODO ------------- le JWT --------------------- //
+
+        let tokens = jwtTokens(society)
 
         const addSociety = await pool.query(
-            "INSERT INTO entreprise (civilite,nom,prenom,telephone,rue,cp,ville,email,mdp,role,siret,raison_sociale,code_ape) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) RETURNING *",
-            [civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, role, siret, raison_sociale, code_ape]
+            "INSERT INTO entreprise (civilite,nom,prenom,telephone,rue,cp,ville,email,mdp,siret,raison_sociale,code_ape) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) RETURNING *",
+            [civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, siret, raison_sociale, code_ape]
         );
-        res.status(200).json({ "addASociety": addSociety.rows[0] })
+        res.status(StatusCodes.OK).json({ "addASociety": addSociety.rows[0], "token": tokens })
         console.log('A Society has been added correctly');
 
     } catch (error) {
         console.error(error.message);
+        res.status(StatusCodes.BAD_REQUEST).json({ error: "Bad Request" })
 
     }
 }

@@ -1,7 +1,7 @@
 //** get all workers */
 
 const pool = require("../../config");
-
+const { StatusCodes } = require('http-status-codes');
 
 exports.getAllWorkers = async (req, res) => {
 
@@ -9,10 +9,11 @@ exports.getAllWorkers = async (req, res) => {
     const AllWorkers = await pool.query(
       " SELECT utilisateur.*, salarie.salarie_id FROM utilisateur, salarie WHERE utilisateur.role = false AND utilisateur.utilisateur_id = salarie.utilisateur_id "
     );
-    res.status(200).json({ "myUsers": AllWorkers.rows });
+    res.status(StatusCodes.OK).json({ "myUsers": AllWorkers.rows });
     // console.warn("get request", allUsers);
   } catch (error) {
     console.error(error.message);
+    res.status(StatusCodes.BAD_REQUEST).json({ error: "Bad Request" })
   }
 };
 
@@ -24,10 +25,11 @@ exports.getAllSocieties = async (req, res) => {
     const allSocieties = await pool.query(
       "SELECT utilisateur.*,  entreprise.entreprise_id FROM utilisateur, entreprise WHERE utilisateur.role = true AND utilisateur.utilisateur_id = entreprise.utilisateur_id"
     );
-    res.status(200).json({ "myUsers": allSocieties.rows });
+    res.status(StatusCodes.OK).json({ "myUsers": allSocieties.rows });
     // console.warn("get request", allUsers);
   } catch (error) {
     console.error(error.message);
+    res.status(StatusCodes.BAD_REQUEST).json({ error: "Bad Request" })
   }
 
 };
@@ -40,10 +42,11 @@ exports.getAllUsers = async (req, res) => {
     const allUsers = await pool.query(
       "SELECT * FROM utilisateur ORDER BY utilisateur_id ASC"
     );
-    res.status(200).json({ "myUsers": allUsers.rows });
+    res.status(StatusCodes.OK).json({ "myUsers": allUsers.rows });
     // console.warn("get request", allUsers);
   } catch (error) {
     console.error(error.message);
+    res.status(StatusCodes.BAD_REQUEST).json({ error:"Bad Request"})
   }
 
 };
