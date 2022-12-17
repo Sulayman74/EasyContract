@@ -21,7 +21,7 @@ exports.updateWorker = async (req, res) => {
         }
     } catch (error) {
         console.error(error.message);
-        res.status(400).send(error.message)
+        res.status(400).json({ error: error.message })
     }
 
 
@@ -34,23 +34,32 @@ exports.updateWorker = async (req, res) => {
     } else {
 
         try {
-            const { id } = req.params
+            const { id } = req.params;
+            let user = await pool.query(
+                "SELECT * FROM salarie WHERE salarie_id=$1", [id]
+            )
             const { civilite, nom, prenom, telephone, rue, cp, ville, email, role, nom_jeune_fille, num_ss, date_naissance, lieu_naissance, pays_naissance } = req.body;
+
+
 
             let { mdp } = req.body;
             const saltRounds = 12;
             let hash = await bcrypt.hash(mdp, saltRounds);
             mdp = hash
+            user = user.rows[0]
 
+            for (const key in req.body) {
+                user[key] = req.body[key] || user[key]
+            }
 
             const updateWorker = await pool.query(
                 "UPDATE salarie SET civilite=$1,nom=$2,prenom=$3,telephone=$4,rue=$5,cp=$6,ville=$7,email=$8,mdp=$9,role=$10,nom_jeune_fille=$11,num_ss=$12, date_naissance=$13, lieu_naissance=$14,pays_naissance=$15 WHERE salarie_id = $16", [civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, role, nom_jeune_fille, num_ss, date_naissance, lieu_naissance, pays_naissance, id]
             )
-            res.status(200).json({ "message": "Update done for the worker", "newDatas": updateWorker })
+            res.status(200).json({ "message": "Update done for the worker", "newDatas": user })
 
         } catch (error) {
             console.error(error.message);
-            res.status(400).send(error.message)
+            res.status(400).json({ error: error.message })
         }
     }
 }
@@ -72,7 +81,7 @@ exports.updateSociety = async (req, res) => {
         }
     } catch (error) {
         console.error(error.message);
-        res.status(400).send(error.message)
+        res.status(400).json({ error: error.message })
     }
 
 
@@ -87,6 +96,6 @@ exports.updateSociety = async (req, res) => {
 
     } catch (error) {
         console.error(error.message);
-        res.status(400).send(error.message)
+        res.status(400).json({ error: error.message })
     }
 }

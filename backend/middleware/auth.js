@@ -17,7 +17,7 @@ function authenticateToken(req, res, next) {
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN);
     req.user = decoded;
 } catch (err) {
-    return res.status(StatusCodes.FORBIDDEN).send("Unauthorized");
+    return res.status(StatusCodes.FORBIDDEN).json({error : err.message,"detail": "Unauthorized"});
 }
 return next();
 
@@ -29,7 +29,7 @@ return next();
   // })
 }
 
-module.exports = authenticateToken
+module.exports = {authenticateToken}
 
 // function verifyToken(req, res, next) {
 //   let token = req.headers["authorization"];

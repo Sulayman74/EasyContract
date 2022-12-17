@@ -71,8 +71,8 @@ exports.registerSociety = async (req, res) => {
 
     //! Je vérifie si mon entreprise existe par son email,siret qui est unique */
 
-    const { siret, email } = req.body
-    let society = await pool.query("SELECT siret,email FROM entreprise WHERE siret=$1 AND email=$2", [siret, email])
+    const { email } = req.body
+    let society = await pool.query("SELECT email FROM entreprise WHERE email=$1", [email])
 
     //** Je verifie le format de l'email via validator et isEmail */
     if (!isEmail(email)) {
@@ -83,7 +83,7 @@ exports.registerSociety = async (req, res) => {
 
     if (society.rowCount !== 0) {
         console.log("Can not add this society");
-        res.status(StatusCodes.BAD_REQUEST).json({ "siret": siret, "email": email, "message": "society already exists" })
+        res.status(StatusCodes.BAD_REQUEST).json({ "email": email, "message": "society already exists" })
         return false
     }
     //! ---------------------------------------------------- */
