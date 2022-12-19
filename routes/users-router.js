@@ -1,7 +1,7 @@
 const express = require('express');
 const userRouter = express.Router();
 const authenticateToken = require('../middleware/auth');
-const verifyToken = require('../middleware/auth')
+
 //! ajout de users/register/login */
 
 //** salariés */
@@ -47,31 +47,31 @@ userRouter.post("/registerSociety", registerSociety.registerSociety)
 
 
 //** All the users route */
-userRouter.get("/allUsers",authenticateToken, getAllUsers.getAllUsers);
+userRouter.get("/allUsers", getAllUsers.getAllUsers);
 
 //** Users by Id  */
-userRouter.get("/oneWorker/:id",authenticateToken,  getaWorker.getWorker);
-userRouter.get("/oneSociety/:id",authenticateToken,  getaSociety.getSociety);
+userRouter.get("/oneWorker/:id",  getaWorker.getWorker);
+userRouter.get("/oneSociety/:id",  getaSociety.getSociety);
 
 //** All the workers */
-userRouter.get("/workers",authenticateToken, getWorkers.getAllWorkers);
+userRouter.get("/workers", getWorkers.getAllWorkers);
 
 //** All the societies */
-userRouter.get("/societies",authenticateToken, getSocieties.getAllSocieties);
+userRouter.get("/societies", getSocieties.getAllSocieties);
 
 //** worker add */
-userRouter.post("/createWorker",authenticateToken, addWorker.addWorker);
+userRouter.post("/createWorker", addWorker.addWorker);
 //** society add register login */
-userRouter.post("/registerSociety",authenticateToken, registerSociety.registerSociety)
-userRouter.post("/createSociety",authenticateToken, addSociety.addSociety);
+
+userRouter.post("/createSociety", addSociety.addSociety);
 
 //** delete section */
-userRouter.delete("/deleteWorker/:id",authenticateToken, deleteWorker.deleteWorker);
-userRouter.delete("/deleteSociety/:id",authenticateToken, deleteSociety.deleteSociety)
+userRouter.delete("/deleteWorker/:id", deleteWorker.deleteWorker);
+userRouter.delete("/deleteSociety/:id", deleteSociety.deleteSociety)
 
 //** update section */
-userRouter.put("/updateWorker/:id",authenticateToken, updateWorker.updateWorker)
-userRouter.put("/updateSociety/:id",authenticateToken, updateSociety.updateSociety)
+userRouter.put("/updateWorker/:id", updateWorker.updateWorker)
+userRouter.put("/updateSociety/:id", updateSociety.updateSociety)
 
 
 module.exports = userRouter; 
