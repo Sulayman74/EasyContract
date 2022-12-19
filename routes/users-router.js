@@ -45,6 +45,9 @@ userRouter.post("/registerSociety", registerSociety.registerSociety)
 
 // TODO --------- routes qui ont besoin du token pour y accéder ------- */
 
+//** authenfication avec le middleware authToken */
+
+// TODO app.use(authenticateToken)
 
 //** All the users route */
 userRouter.get("/allUsers", getAllUsers.getAllUsers);
