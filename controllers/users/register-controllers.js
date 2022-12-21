@@ -40,8 +40,8 @@ exports.registerWorker = async (req, res) => {
             let hash = await bcrypt.hash(mdp, saltRounds);
             mdp = hash
 
-            const worker = { email: req.body.email, utilisateur_id: req.body.utilisateur_id, role: req.body.role, mdp : req.body.mdp }
             // TODO ------------- le JWT --------------------- //
+            const worker = { email: req.body.email, utilisateur_id: req.body.utilisateur_id, role: req.body.role, mdp : req.body.mdp }
 
             let tokens = jwtTokens(worker)
 
