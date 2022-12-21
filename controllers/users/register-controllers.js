@@ -40,7 +40,7 @@ exports.registerWorker = async (req, res) => {
             let hash = await bcrypt.hash(mdp, saltRounds);
             mdp = hash
 
-            const worker = { email: req.body.email, utilisateur_id: req.body.utilisateur_id, role: req.body.role }
+            const worker = { email: req.body.email, utilisateur_id: req.body.utilisateur_id, role: req.body.role, mdp : req.body.mdp }
             // TODO ------------- le JWT --------------------- //
 
             let tokens = jwtTokens(worker)
@@ -100,7 +100,7 @@ exports.registerSociety = async (req, res) => {
         let hash = await bcrypt.hash(mdp, saltRounds);
         mdp = hash
 
-        const society = { email: req.body.email, utilisateur_id: req.body.utilisateur_id, role: req.body.role }
+        const society = { email: req.body.email, utilisateur_id: req.body.utilisateur_id, role: req.body.role, mdp:req.body.mdp }
         // TODO ------------- le JWT --------------------- //
 
         let tokens = jwtTokens(society)

@@ -33,7 +33,7 @@ exports.loginSalarie = async (req, res) => {
 
         let tokens = jwtTokens(user)
         // console.log({ "token": tokens });
-        res.status(200).json({ "tokens": tokens, "datas": user,message: "You are welcome" })
+        res.status(200).json({ "token": tokens, "datas": user,message: "You are welcome" })
     }
     catch (err) {
         res.status(401).json({ error: err.message, "message": "l'erreur tokens" })
@@ -69,7 +69,7 @@ exports.loginSociety = async (req, res) => {
         // TODO ------------- le JWT --------------------- //
 
         let tokens = jwtTokens(society)
-        res.status(200).json({ "tokens": tokens, "datas": society,message: "You are welcome" })
+        res.status(200).json({ "token": tokens, "datas": society,message: "You are welcome" })
     }
     catch (err) {
         res.status(401).json({ error: err.message, "message": "l'erreur tokens" })
