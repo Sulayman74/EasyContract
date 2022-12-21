@@ -1,5 +1,4 @@
 const express = require('express');
-const app = express();
 const userRouter = express.Router();
 const authenticateToken = require('../middleware/auth');
 
@@ -31,51 +30,99 @@ const deleteSociety = require("../controllers/users/delete-controller");
 const updateWorker = require("../controllers/users/update-controller")
 const updateSociety = require("../controllers/users/update-controller");
 
+//! deuxième façon de faire pour utiliser les routes
+
+// ! ------------------------------------------------ */
+
+// TODO ------ les routes sans verification de Token ----- */
+
+// //** worker register login */
+// userRouter.post("/loginWorker", loginWorker.loginSalarie)
+// userRouter.post("/registerWorker", registerWorker.registerWorker);
+
+// //** society register login */
+// userRouter.post("/loginSociety", loginSociety.loginSociety)
+// userRouter.post("/registerSociety", registerSociety.registerSociety)
+
+// TODO --------- routes qui ont besoin du token pour y accéder ------- */
+
+// //** authenfication avec le middleware authToken */
+
+// app.use(authenticateToken)
+
+// //** All the users route */
+// userRouter.get("/allUsers", getAllUsers.getAllUsers);
+
+// //** Users by Id  */
+// userRouter.get("/oneWorker/:id", getaWorker.getWorker);
+// userRouter.get("/oneSociety/:id", getaSociety.getSociety);
+
+// //** All the workers */
+// userRouter.get("/workers", getWorkers.getAllWorkers);
+
+// //** All the societies */
+// userRouter.get("/societies", getSocieties.getAllSocieties);
+
+// //** worker add */
+// userRouter.post("/createWorker", addWorker.addWorker);
+// //** society add register login */
+
+// userRouter.post("/createSociety", addSociety.addSociety);
+
+// //** delete section */
+// userRouter.delete("/deleteWorker/:id", deleteWorker.deleteWorker);
+// userRouter.delete("/deleteSociety/:id", deleteSociety.deleteSociety)
+
+// //** update section */
+// userRouter.put("/updateWorker/:id", updateWorker.updateWorker)
+// userRouter.put("/updateSociety/:id", updateSociety.updateSociety)
 
 // ! ------------------------------------------------ */
 
 // TODO ------ les routes sans verification de Token ----- */
 
 //** worker register login */
-userRouter.post("/loginWorker", loginWorker.loginSalarie)
-userRouter.post("/registerWorker", registerWorker.registerWorker);
+userRouter
+.post("/loginWorker", loginWorker.loginSalarie)
+.post("/registerWorker", registerWorker.registerWorker)
 
 //** society register login */
-userRouter.post("/loginSociety", loginSociety.loginSociety)
-userRouter.post("/registerSociety", registerSociety.registerSociety)
+.post("/loginSociety", loginSociety.loginSociety) 
+.post("/registerSociety", registerSociety.registerSociety)
 
 // TODO --------- routes qui ont besoin du token pour y accéder ------- */
 
 //** authenfication avec le middleware authToken */
 
-app.use(authenticateToken)
+
+.use(authenticateToken)
 
 //** All the users route */
-userRouter.get("/allUsers", getAllUsers.getAllUsers);
+.get("/allUsers", getAllUsers.getAllUsers)
 
 //** Users by Id  */
-userRouter.get("/oneWorker/:id", getaWorker.getWorker);
-userRouter.get("/oneSociety/:id", getaSociety.getSociety);
+.get("/profileWorker", getaWorker.getWorker)
+.get("/profileSociety", getaSociety.getSociety)
 
 //** All the workers */
-userRouter.get("/workers", getWorkers.getAllWorkers);
+.get("/workers", getWorkers.getAllWorkers)
 
 //** All the societies */
-userRouter.get("/societies", getSocieties.getAllSocieties);
+.get("/societies", getSocieties.getAllSocieties)
 
 //** worker add */
-userRouter.post("/createWorker", addWorker.addWorker);
+.post("/createWorker", addWorker.addWorker)
 //** society add register login */
 
-userRouter.post("/createSociety", addSociety.addSociety);
+.post("/createSociety", addSociety.addSociety)
 
 //** delete section */
-userRouter.delete("/deleteWorker/:id", deleteWorker.deleteWorker);
-userRouter.delete("/deleteSociety/:id", deleteSociety.deleteSociety)
+.delete("/deleteWorker/:id", deleteWorker.deleteWorker)
+.delete("/deleteSociety/:id", deleteSociety.deleteSociety)
 
 //** update section */
-userRouter.put("/updateWorker/:id", updateWorker.updateWorker)
-userRouter.put("/updateSociety/:id", updateSociety.updateSociety)
+.put("/updateWorker/:id", updateWorker.updateWorker)
+.put("/updateSociety/:id", updateSociety.updateSociety)
 
 
-module.exports = userRouter; 
+module.exports = userRouter 
