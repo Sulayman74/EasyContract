@@ -27,16 +27,16 @@ exports.loginSalarie = async (req, res) => {
         const validPassword = await bcrypt.compare(mdp, clearPassword);
         if (!validPassword) return res.status(401).json({ error: "wrong password" })
 
-        const user = { email: login.rows[0].email, utilisateur_id: login.rows[0].utilisateur_id, role: login.rows[0].role }
+        const user = { email: login.rows[0].email, utilisateur_id: login.rows[0].salarie_id, role: login.rows[0].role, mdp : login.rows[0].mdp }
 
         // TODO ------------- le JWT --------------------- //
 
-        let tokens = jwtTokens(user)
+        let token = jwtTokens(user)
         // console.log({ "token": tokens });
-        res.status(200).json({ "token": tokens, "datas": user,message: "You are welcome" })
+        res.status(200).json({ "token": token, "datas": user,message: "You are welcome" })
     }
     catch (err) {
-        res.status(401).json({ error: err.message, "message": "l'erreur tokens" })
+        res.status(401).json({ error: err.message, "message": "l'erreur token" })
     }
 
 
@@ -64,12 +64,12 @@ exports.loginSociety = async (req, res) => {
         const validPassword = await bcrypt.compare(mdp, clearPassword);
         if (!validPassword) return res.status(401).json({ error: "wrong password" })
 
-        const society = { email: login.rows[0].email, utilisateur_id: login.rows[0].utilisateur_id, role: login.rows[0].role }
+        const society = { email: login.rows[0].email, utilisateur_id: login.rows[0].entreprise_id, role: login.rows[0].role, mdp:login.rows[0].mdp }
 
         // TODO ------------- le JWT --------------------- //
 
-        let tokens = jwtTokens(society)
-        res.status(200).json({ "token": tokens, "datas": society,message: "You are welcome" })
+        let token = jwtTokens(society)
+        res.status(200).json({ "token": token, "datas": society,message: "You are welcome" })
     }
     catch (err) {
         res.status(401).json({ error: err.message, "message": "l'erreur tokens" })
