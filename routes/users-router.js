@@ -1,4 +1,5 @@
 const express = require('express');
+const app = express();
 const userRouter = express.Router();
 const authenticateToken = require('../middleware/auth');
 
@@ -15,7 +16,7 @@ const registerSociety = require("../controllers/users/register-controllers");
 const loginSociety = require("../controllers/users/login-controllers")
 
 //** recherche de tous les users ou d'un seul en particulier par son id */
-const getAllUsers= require("../controllers/users/get-all-controller");
+const getAllUsers = require("../controllers/users/get-all-controller");
 const getaWorker = require("../controllers/users/get-one-controller");
 const getaSociety = require("../controllers/users/get-one-controller");
 const getWorkers = require("../controllers/users/get-all-controller");
@@ -47,14 +48,14 @@ userRouter.post("/registerSociety", registerSociety.registerSociety)
 
 //** authenfication avec le middleware authToken */
 
-// TODO app.use(authenticateToken)
+app.use(authenticateToken)
 
 //** All the users route */
 userRouter.get("/allUsers", getAllUsers.getAllUsers);
 
 //** Users by Id  */
-userRouter.get("/oneWorker/:id",  getaWorker.getWorker);
-userRouter.get("/oneSociety/:id",  getaSociety.getSociety);
+userRouter.get("/oneWorker/:id", getaWorker.getWorker);
+userRouter.get("/oneSociety/:id", getaSociety.getSociety);
 
 //** All the workers */
 userRouter.get("/workers", getWorkers.getAllWorkers);
