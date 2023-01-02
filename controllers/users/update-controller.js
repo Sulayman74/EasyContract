@@ -9,12 +9,23 @@ exports.updateWorker = async (req, res) => {
 
     //! Je vérifie si mon salarié existe par son email qui est unique */
 
-    const { id } = req.params
-    const { email } = req.body
+    const { utilisateur_id } = req.salarie
+    const { email } = req.salarie
+
+    console.warn(req.body);
+
+
+    //** Je verifie le format de l'email via validator et isEmail */
+
+    if (!isEmail(email)) {
+        console.log("invalid email");
+        res.status(402).json({ "email": email, "message": "invalid email" })
+        return false
+    }
+
 
     try {
-        let emailExist = await pool.query("SELECT email FROM salarie WHERE email=$1 AND salarie_id<>$2", [email, id]);
-        console.log(id, email);
+        let emailExist = await pool.query("SELECT email FROM salarie WHERE email=$1 AND salarie_id<>$2", [email, utilisateur_id]);
         if (emailExist.rowCount !== 0) {
             res.status(400).json({ "message": "cet email est déjà utilisé" })
             return false
@@ -25,34 +36,25 @@ exports.updateWorker = async (req, res) => {
     }
 
 
-    //** Je verifie le format de l'email via validator et isEmail */
+    try {
+        const { utilisateur_id } = req.salarie
+        const { civilite, nom, prenom, telephone, rue, cp, ville, email, nom_jeune_fille, num_ss, date_naissance, lieu_naissance, pays_naissance } = req.body;
 
-    if (!isEmail(email)) {
-        console.log("invalid email");
-        res.status(402).json({ "email": email, "message": "invalid email" })
-        return false
-    } else {
+        let { mdp } = req.salarie;
+        const saltRounds = 12;
+        let hash = await bcrypt.hash(mdp, saltRounds);
+        mdp = hash
 
-        try {
-            const { id } = req.params
-            const { civilite, nom, prenom, telephone, rue, cp, ville, email, role, nom_jeune_fille, num_ss, date_naissance, lieu_naissance, pays_naissance } = req.body;
+        const updateWorker = await pool.query(
+            "UPDATE salarie SET civilite=$1,nom=$2,prenom=$3,telephone=$4,rue=$5,cp=$6,ville=$7,email=$8,nom_jeune_fille=$9,num_ss=$10, date_naissance=$11, lieu_naissance=$12,pays_naissance=$13 WHERE salarie_id = $14", [civilite, nom, prenom, telephone, rue, cp, ville, email, nom_jeune_fille, num_ss, date_naissance, lieu_naissance, pays_naissance, utilisateur_id]
+        )
+        res.status(200).json({ "message": "Update done for the worker", "newDatas": req.body })
 
-            let { mdp } = req.body;
-            const saltRounds = 12;
-            let hash = await bcrypt.hash(mdp, saltRounds);
-            mdp = hash
-
-
-            const updateWorker = await pool.query(
-                "UPDATE salarie SET civilite=$1,nom=$2,prenom=$3,telephone=$4,rue=$5,cp=$6,ville=$7,email=$8,mdp=$9,role=$10,nom_jeune_fille=$11,num_ss=$12, date_naissance=$13, lieu_naissance=$14,pays_naissance=$15 WHERE salarie_id = $16", [civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, role, nom_jeune_fille, num_ss, date_naissance, lieu_naissance, pays_naissance, id]
-            )
-            res.status(200).json({ "message": "Update done for the worker", "newDatas": updateWorker })
-
-        } catch (error) {
-            console.error(error.message);
-            res.status(400).send(error.message)
-        }
+    } catch (error) {
+        console.error(error.message);
+        res.status(400).send(error.message)
     }
+
 }
 
 //** Update a society */

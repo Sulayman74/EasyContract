@@ -12,7 +12,6 @@ function authenticateToken(req, res, next) {
   const authHeader = req.headers[attr] //Bearer TOKEN
   const token = authHeader && authHeader.split(' ')[1];
 
-  console.log(token);
   if (!token) return res.status(StatusCodes.BAD_REQUEST).json({ error: "not allowed null token" });
 
 

@@ -33,7 +33,7 @@ exports.addWorker = async (req, res) => {
         //** Ensuite je créé s'il n'existe pas */
         try {
 
-            const { civilite, nom, prenom, telephone, rue, cp, ville, email, role, nom_jeune_fille, num_ss, date_naissance, lieu_naissance, pays_naissance } = req.body;
+            const { civilite, nom, prenom, telephone, rue, cp, ville, email,nom_jeune_fille, num_ss, date_naissance, lieu_naissance, pays_naissance } = req.body;
 
             //** ---- hash du mot de passe via bcrypt */
 
@@ -48,8 +48,8 @@ exports.addWorker = async (req, res) => {
             let tokens = jwtTokens(worker)
         
             const addWorker = await pool.query(
-                "INSERT INTO salarie (civilite,nom,prenom,telephone,rue,cp,ville,email,mdp,role,nom_jeune_fille,num_ss, date_naissance, lieu_naissance,pays_naissance) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15) RETURNING *",
-                [civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, role, nom_jeune_fille, num_ss, date_naissance, lieu_naissance, pays_naissance]
+                "INSERT INTO salarie (civilite,nom,prenom,telephone,rue,cp,ville,email,mdp,nom_jeune_fille,num_ss, date_naissance, lieu_naissance,pays_naissance) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14) RETURNING *",
+                [civilite, nom, prenom, telephone, rue, cp, ville, email, mdp,nom_jeune_fille, num_ss, date_naissance, lieu_naissance, pays_naissance]
             );
 
 
@@ -74,7 +74,7 @@ exports.addSociety = async (req, res) => {
     //! Je vérifie si mon entreprise existe par son email,siret qui est unique */
 
     const { siret, email } = req.body
-    console.log(siret, email);
+    // console.log(siret, email);
     let society = await pool.query("SELECT siret,email FROM entreprise WHERE siret=$1 AND email=$2", [siret, email])
     //** Je verifie le format de l'email via validator et isEmail */
     if (!isEmail(email)) {
@@ -95,7 +95,7 @@ exports.addSociety = async (req, res) => {
     try {
 
         // console.log(req.body);
-        const { civilite, nom, prenom, telephone, rue, cp, ville, email, role, siret, raison_sociale, code_ape } = req.body;
+        const { civilite, nom, prenom, telephone, rue, cp, ville, email, siret, raison_sociale, code_ape } = req.body;
 
         //** ---- hash du mot de passe via bcrypt */
 
@@ -110,8 +110,8 @@ exports.addSociety = async (req, res) => {
         let tokens = jwtTokens(society)
   
         const addSociety = await pool.query(
-            "INSERT INTO entreprise (civilite,nom,prenom,telephone,rue,cp,ville,email,mdp,role,siret,raison_sociale,code_ape) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) RETURNING *",
-            [civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, role, siret, raison_sociale, code_ape]
+            "INSERT INTO entreprise (civilite,nom,prenom,telephone,rue,cp,ville,email,mdp,siret,raison_sociale,code_ape) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) RETURNING *",
+            [civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, siret, raison_sociale, code_ape]
         );
         res.status(StatusCodes.OK).json({ "addASociety": addSociety.rows[0], "tokens": tokens, "datas": society, message: "A Society has been added correctly" })
 
