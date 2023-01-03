@@ -9,7 +9,7 @@ exports.getAllWorkers = async (req, res) => {
     const AllWorkers = await pool.query(
       " SELECT utilisateur.*, salarie.salarie_id FROM utilisateur, salarie WHERE utilisateur.role = false AND utilisateur.utilisateur_id = salarie.utilisateur_id "
     );
-    res.status(StatusCodes.OK).json({ "myUsers": AllWorkers.rows });
+    res.status(StatusCodes.OK).json({ "tous les salaries": AllWorkers.rows });
     // console.warn("get request", allUsers);
   } catch (error) {
     console.error(error.message);
@@ -25,7 +25,7 @@ exports.getAllSocieties = async (req, res) => {
     const allSocieties = await pool.query(
       "SELECT utilisateur.*,  entreprise.entreprise_id FROM utilisateur, entreprise WHERE utilisateur.role = true AND utilisateur.utilisateur_id = entreprise.utilisateur_id"
     );
-    res.status(StatusCodes.OK).json({ "myUsers": allSocieties.rows });
+    res.status(StatusCodes.OK).json({ "toutes les societes": allSocieties.rows });
     // console.warn("get request", allUsers);
   } catch (error) {
     console.error(error.message);

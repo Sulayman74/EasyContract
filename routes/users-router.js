@@ -122,7 +122,7 @@ userRouter
 
     //** update section */
     .put("/updateWorker", updateWorker.updateWorker)
-    .put("/updateSociety/:id", updateSociety.updateSociety)
+    .put("/updateSociety", updateSociety.updateSociety)
 
 
 module.exports = userRouter 
