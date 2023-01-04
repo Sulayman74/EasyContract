@@ -12,8 +12,6 @@ exports.updateWorker = async (req, res) => {
     const { utilisateur_id } = req.salarie
     const { email } = req.salarie
 
-    console.warn(req.body);
-
 
     //** Je verifie le format de l'email via validator et isEmail */
 
@@ -61,13 +59,12 @@ exports.updateWorker = async (req, res) => {
 
 exports.updateSociety = async (req, res) => {
 
-    const { id } = req.params
-    const { email } = req.body
+    const { utilisateur_id } = req.entreprise
+    const { email } = req.entreprise
 
 
     try {
-        let emailExist = await pool.query("SELECT email FROM entreprise WHERE email=$1 AND entreprise_id<>$2", [email, id]);
-        console.log(id, email);
+        let emailExist = await pool.query("SELECT email FROM entreprise WHERE email=$1 AND entreprise_id<>$2", [email, utilisateur_id]);
         if (emailExist.rowCount !== 0) {
             res.status(400).json({ "message": "cet email est déjà utilisé" })
             return false
@@ -79,13 +76,19 @@ exports.updateSociety = async (req, res) => {
 
 
     try {
-        const { id } = req.params
-        const { civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, role, siret, raison_sociale, code_ape } = req.body;
+        const { utilisateur_id } = req.entreprise
+        const { civilite, nom, prenom, telephone, rue, cp, ville, email, role, siret, raison_sociale, code_ape } = req.body;
+
+        let { mdp } = req.salarie;
+        const saltRounds = 12;
+        let hash = await bcrypt.hash(mdp, saltRounds);
+        mdp = hash
+
         const updateSociety = await pool.query(
-            "UPDATE entreprise SET civilite=$1,nom=$2,prenom=$3,telephone=$4,rue=$5,cp=$6,ville=$7,email=$8,mdp=$9,role=$10,siret=$11,raison_sociale=$12, code_ape=$13 WHERE entreprise_id = $14", [civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, role, siret, raison_sociale, code_ape, id]
+            "UPDATE entreprise SET civilite=$1,nom=$2,prenom=$3,telephone=$4,rue=$5,cp=$6,ville=$7,email=$8,mdp=$9,role=$10,siret=$11,raison_sociale=$12, code_ape=$13 WHERE entreprise_id = $14", [civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, role, siret, raison_sociale, code_ape, utilisateur_id]
         )
 
-        res.status(200).json({ "message": "Update done for the society", "newDatas": updateSociety })
+        res.status(200).json({ "message": "Update done for the society", "newDatas": req.body })
 
     } catch (error) {
         console.error(error.message);
