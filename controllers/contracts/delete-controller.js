@@ -6,7 +6,9 @@ exports.deleteContract = async (req, res) => {
 
     try {
         const { id } = req.params
-        console.log(req.params);
+        const test = req
+     
+        console.log("Je viens de delete contrat", test);
         const deleteWorker = await pool.query(
             "DELETE FROM contrat WHERE contrat_id=$1", [id]);
 
