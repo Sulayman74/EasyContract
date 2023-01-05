@@ -7,7 +7,7 @@ exports.getAllWorkers = async (req, res) => {
 
   try {
     const AllWorkers = await pool.query(
-      " SELECT * FROM salarie"
+      " SELECT * FROM salarie ORDER BY salarie.nom ASC "
     );
     res.status(StatusCodes.OK).json({ "salaries": AllWorkers.rows });
     // console.warn("get request", allUsers);
@@ -23,7 +23,7 @@ exports.getAllSocieties = async (req, res) => {
 
   try {
     const allSocieties = await pool.query(
-      "SELECT * FROM entreprise "
+      "SELECT * FROM entreprise ORDER BY entreprise.raison_sociale ASC "
     );
     res.status(StatusCodes.OK).json({ "societes": allSocieties.rows });
     // console.warn("get request", allUsers);
