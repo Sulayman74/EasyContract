@@ -109,8 +109,8 @@ exports.registerSociety = async (req, res) => {
             "INSERT INTO entreprise (civilite,nom,prenom,telephone,rue,cp,ville,email,mdp,siret,raison_sociale,code_ape) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) RETURNING *",
             [civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, siret, raison_sociale, code_ape]
         );
-        res.status(StatusCodes.OK).json({ "addASociety": addSociety.rows[0], "token": tokens })
-        console.log('A Society has been added correctly');
+        res.status(StatusCodes.OK).json({ "addASociety": addSociety.rows[0], "token": tokens, message: "A society has been added" })
+
 
     } catch (error) {
         console.error(error.message);

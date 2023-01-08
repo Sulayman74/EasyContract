@@ -23,7 +23,7 @@ function authenticateToken(req, res, next) {
 
   } catch (err) {
 
-    return res.status(StatusCodes.FORBIDDEN).json({ "catch": "Unauthorized", err: message });
+    return res.status(StatusCodes.FORBIDDEN).json({ "catch": "Unauthorized", err: err });
   }
   return next();
 }
