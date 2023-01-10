@@ -23,7 +23,6 @@ exports.addContract = async (req, res) => {
         ON 
             contrat.fki_salarie = salarie.salarie_id`)
         res.status(200).json({ "message": "a contract has been added", "contract": addContract.rows[0], "salarie": salarie })
-
     } catch (error) {
         console.error(error.message);
     }
