@@ -1,4 +1,5 @@
 ## EasyContract
+### Partie backend
 
 # Contrat de travail - NodeJS Express PostgreSQL
 
@@ -20,7 +21,6 @@ L'application sera également capable de générer des PDF à partir des contrat
 ## Technologies 
 - NodeJS
 - Express
-- PostgreSQL 
-- HTML
-- CSS
 - JavaScript
+- PostgreSQL 
+
