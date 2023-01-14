@@ -27,9 +27,11 @@ L'application sera également capable de générer des PDF à partir des contrat
 ### J'ai pu travailler pour la mise en place du projet avec une équipe, un trello a été mise en place
 
       https://trello.com/b/YGQwhjk6/easycontract
+![alt text](https://github.com/Sulayman74/EasyContract/blob/main/images/trello_EasyContract.jpg?raw=true)
+
 J'ai pushé un dossier avec deux schémas de BDD, un avec un héritage et l'autre sans, et un autre dossier avec le script SQL de mes tables.
 Ma partie backend a aussi été déployé sur le site Render.com ainsi que le front :
       https://client-easycontrat.onrender.com/accueil
       
-![alt text](https://github.com/Sulayman74/EasyContract/blob/main/images/trello_EasyContract.jpg?raw=true)      
+ 
 
