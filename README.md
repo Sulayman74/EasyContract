@@ -32,6 +32,9 @@ L'application sera également capable de générer des PDF à partir des contrat
 J'ai pushé un dossier avec deux schémas de BDD, un avec un héritage et l'autre sans, et un autre dossier avec le script SQL de mes tables.
 Ma partie backend a aussi été déployé sur le site Render.com ainsi que le front :
       https://client-easycontrat.onrender.com/accueil
+* Aperçu de la base de données :
+
+![alt text](https://github.com/Sulayman74/EasyContract/blob/main/images_BDD/BDD_inherits.png?raw=true)
       
- 
+ ![alt text](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRx_Wes5gHvyJRnooboklj-igWPKTx4xspmTg&usqp=CAU)
 
