@@ -31,5 +31,5 @@ J'ai pushé un dossier avec deux schémas de BDD, un avec un héritage et l'autr
 Ma partie backend a aussi été déployé sur le site Render.com ainsi que le front :
       https://client-easycontrat.onrender.com/accueil
       
-![alt text](https://github.com/Sulayman74/EasyContract/blob/main/trello_EasyContract.jpg?raw=true)      
+![alt text](https://github.com/Sulayman74/EasyContract/images/main/trello_EasyContract.jpg?raw=true)      
 
