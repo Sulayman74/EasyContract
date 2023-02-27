@@ -1,25 +1,36 @@
 const pool = require("../../config");
-const {StatusCodes} = require("http-status-codes");
-exports.getContrats = async (req, res)=> {
+const { StatusCodes } = require("http-status-codes");
+exports.getContrats = async (req, res) => {
 
-    const {user_id} = req.salarie
+    const { utilisateur_id } = req.entreprise
 
     try {
+        console.log(utilisateur_id);
         const salarie = await pool.query(
-            `
-            SELECT
-	salarie.*, 
-	contrat.*
+`
+SELECT
+	contrat.*, 
+	entreprise.entreprise_id, 
+	entreprise.civilite, 
+	entreprise.nom, 
+	entreprise.prenom, 
+	entreprise.raison_sociale, 
+	entreprise.utilisateur_id
 FROM
-	salarie
-	INNER JOIN
 	contrat
+	INNER JOIN
+	entreprise
 	ON 
-		salarie.salarie_id = $1
-            `,[user_id]
+		contrat.fki_entreprise =$1
+WHERE
+	contrat.fki_entreprise =$1
+
+`,[utilisateur_id]
+
         )
-        res.status(StatusCodes.OK).json({"reponse" : salarie})
+        res.status(StatusCodes.OK).json({ "reponse": salarie })
     } catch (error) {
-       res.status(StatusCodes.BAD_REQUEST).json({error})
+
+        res.status(StatusCodes.BAD_REQUEST).json({ "error": error.message, "message": req.entreprise })
     }
 }
