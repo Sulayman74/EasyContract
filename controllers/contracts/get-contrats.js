@@ -23,7 +23,7 @@ FROM
 	ON 
 		contrat.fki_entreprise =$1
 WHERE
-	contrat.fki_entreprise =$1
+entreprise.utilisateur_id =$1
 
 `,[utilisateur_id]
 
