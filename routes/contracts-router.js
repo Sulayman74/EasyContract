@@ -9,9 +9,10 @@ const deleteContract = require("../controllers/contracts/delete-controller");
 const getContracts = require("../controllers/contracts/get-all")
 const getOne = require("../controllers/contracts/get-one")
 const getContratsSalarie = require("../controllers/contracts/get-contrats")
-
+const test = require("../controllers/contracts/get-contrats")
 contractRouter
     .use(authenticateToken)
+    .get("/test", test.getAllMyContratEntreprise)
     .get("/contrat", getContratsSalarie.getContrats)
     .post("/createContract", addContract.addContract)
     .get("/allContracts", getContracts.getAll)
