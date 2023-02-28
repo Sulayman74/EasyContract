@@ -36,13 +36,14 @@ exports.getSociety = async (req, res) => {
         res.status(StatusCodes.BAD_REQUEST).json({ error: error.message })
     }
 }
-exports.getOneSalarie(id) = async (req, res) => {
+
+exports.getOneSalarie = async (req, res) => {
+    const { id } = req.params
     try {
-        const { id } = req.params
         const getOne = await pool.query(
             `SELECT * FROM salarie WHERE salarie_id = $1`, [id]
         )
-        res.status(StatusCodes.OK)
+        res.status(StatusCodes.OK).json({"salarie" : getOne.rows[0]})
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).json({ error: error.message })
     }
