@@ -31,7 +31,7 @@ FROM
 		contrat.fki_entreprise = entreprise.entreprise_id
         WHERE
         contrat.fki_entreprise = $1`, [utilisateur_id]);
-        res.status(StatusCodes.OK).json({"datas worker": getMyWorkers.rows})
+        res.status(StatusCodes.OK).json({"datasworker": getMyWorkers.rows})
 
 
     } catch (error) {
