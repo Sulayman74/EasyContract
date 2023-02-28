@@ -17,6 +17,7 @@ const loginSociety = require("../controllers/users/login-controllers")
 //** recherche de tous les users ou d'un seul en particulier par son id */
 const getAllUsers = require("../controllers/users/get-all-controller");
 const getaWorker = require("../controllers/users/get-one-controller");
+const getMyWorkers = require('../controllers/users/get-my-salaries')
 const getaSociety = require("../controllers/users/get-one-controller");
 const getWorkers = require("../controllers/users/get-all-controller");
 const getSocieties = require("../controllers/users/get-all-controller");
@@ -114,6 +115,7 @@ userRouter
 
     //** All the workers */
     .get("/workers", getWorkers.getAllWorkers)
+    .get("/myworkers", getMyWorkers.getMyWorkers)
 
     //** All the societies */
     .get("/societies", getSocieties.getAllSocieties)
