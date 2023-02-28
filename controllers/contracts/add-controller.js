@@ -1,3 +1,4 @@
+const { StatusCodes } = require("http-status-codes");
 const pool = require("../../config");
 
 //** Add a contract */
@@ -24,6 +25,6 @@ exports.addContract = async (req, res) => {
             contrat.fki_salarie = salarie.salarie_id`)
         res.status(200).json({ "message": "a contract has been added", "contract": addContract.rows[0], "salarie": salarie })
     } catch (error) {
-        console.error(error.message);
+        res.status(StatusCodes.FORBIDDEN).json({error : error.message})
     }
 }
