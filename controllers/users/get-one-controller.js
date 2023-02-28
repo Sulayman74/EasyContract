@@ -1,6 +1,7 @@
 //** Get one Worker */
 
 const pool = require("../../config")
+const { StatusCodes } = require("http-status-codes")
 
 exports.getWorker = async (req, res) => {
 
@@ -12,11 +13,10 @@ exports.getWorker = async (req, res) => {
         );
         if (getWorker.rows.length === 0) return res.status(400).json({ error: "no worker found" });
 
-        res.status(200).json({ "message": "You have chosen this worker", "worker": getWorker.rows[0] })
+        res.status(StatusCodes.OK).json({ "message": "You have chosen this worker", "worker": getWorker.rows[0] })
 
     } catch (error) {
-        console.error(error.message);
-        res.send(error)
+        res.status(StatusCodes.BAD_REQUEST).json({ error: error.message })
     }
 }
 
@@ -30,11 +30,20 @@ exports.getSociety = async (req, res) => {
         );
         if (getSociety.rows.length === 0) return res.status(400).json({ error: "no society found" });
 
-        res.status(200).json({ "message": `You have chosen this Society ${getSociety.rows[0].raison_sociale}`, "society": getSociety.rows[0] })
+        res.status(StatusCodes.OK).json({ "message": `You have chosen this Society ${getSociety.rows[0].raison_sociale}`, "society": getSociety.rows[0] })
 
     } catch (error) {
-        console.error(error.message);
-        res.send(error)
+        res.status(StatusCodes.BAD_REQUEST).json({ error: error.message })
     }
 }
-
+exports.getOneSalarie(id) = async (req, res) => {
+    try {
+        const { id } = req.params
+        const getOne = await pool.query(
+            `SELECT * FROM salarie WHERE salarie_id = $1`, [id]
+        )
+        res.status(StatusCodes.OK)
+    } catch (error) {
+        res.status(StatusCodes.BAD_REQUEST).json({ error: error.message })
+    }
+}

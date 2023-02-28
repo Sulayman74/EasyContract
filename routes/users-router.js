@@ -20,6 +20,7 @@ const getaWorker = require("../controllers/users/get-one-controller");
 const getaSociety = require("../controllers/users/get-one-controller");
 const getWorkers = require("../controllers/users/get-all-controller");
 const getSocieties = require("../controllers/users/get-all-controller");
+const getOneSalarie = require("../controllers/users/get-one-controller")
 
 //** suppression d'un salarié ou entreprise ( suppression compte) */
 
@@ -109,6 +110,7 @@ userRouter
     //** Users by Id  */
     .get("/profileWorker", getaWorker.getWorker)
     .get("/profileSociety", getaSociety.getSociety)
+    .get("/oneSalarie/:id", getOneSalarie.getOneSalarie)
 
     //** All the workers */
     .get("/workers", getWorkers.getAllWorkers)
