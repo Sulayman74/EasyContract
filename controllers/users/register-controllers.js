@@ -8,7 +8,18 @@ const { jwtTokens } = require("../../helpers/auth_helper");
 const { StatusCodes } = require('http-status-codes');
 
 exports.registerWorker = async (req, res) => {
-
+    const query = 'SELECT * FROM salarie'
+    pool.query(query, (err, res) => {
+        if (err) {
+          if (err.code === 'RAISE_EXCEPTION') {
+            console.log('La date de naissance ne peut pas être supérieure à la date actuelle.');res.status(StatusCodes.BAD_REQUEST).json({err: err.message, "message":err.code})
+            return false
+          } else {
+            console.log(err);
+            console.log(res);
+          }
+        } 
+      });
     //! Je vérifie si mon salarié existe par son email qui est unique */
 
     const { email } = req.body
