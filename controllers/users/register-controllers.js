@@ -55,7 +55,7 @@ exports.registerWorker = async (req, res) => {
 
         } catch (error) {
             // * ici grâce à mon trigger, mon message d'erreur est personnalisé et vient de ma bdd.
-            res.status(StatusCodes.FORBIDDEN).json({ error: error.message })
+            res.status(StatusCodes.FORBIDDEN).json({ message :error.message })
 
         }
     }

@@ -57,8 +57,7 @@ exports.addWorker = async (req, res) => {
 
 
         } catch (error) {
-            console.error(error.message);
-            res.status(StatusCodes.BAD_REQUEST).json({ error: "Bad Request" })
+            res.status(StatusCodes.BAD_REQUEST).json({ error: "Bad Request" + message })
 
         }
     }
