@@ -52,16 +52,10 @@ exports.registerWorker = async (req, res) => {
             res.status(StatusCodes.OK).json({ "registerAWorker": registerWorker.rows[0], "token": tokens, "datas": worker, message: " A worker has beenn registered" })
 
             
-            // pool.query(registerWorker, (err, res) => {
-            //     if (err) {
-            //       if (err.code === 'RAISE_EXCEPTION') {
-            //         return false
-            //       } 
-            //     } 
-            //   });
 
         } catch (error) {
-            res.status(StatusCodes.BAD_REQUEST).json({ error: error.message })
+            // * ici grâce à mon trigger, mon message d'erreur est personnalisé et vient de ma bdd.
+            res.status(StatusCodes.FORBIDDEN).json({ error: error.message })
 
         }
     }
