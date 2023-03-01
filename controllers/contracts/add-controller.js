@@ -25,6 +25,7 @@ exports.addContract = async (req, res) => {
             contrat.fki_salarie = salarie.salarie_id`)
         res.status(200).json({ "message": "a contract has been added", "contract": addContract.rows[0], "salarie": salarie })
     } catch (error) {
+         // * ici grâce à mon trigger, mon message d'erreur est personnalisé et vient de ma bdd.
         res.status(StatusCodes.FORBIDDEN).json({error : error.message})
     }
 }
