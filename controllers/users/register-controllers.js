@@ -8,7 +8,7 @@ const { jwtTokens } = require("../../helpers/auth_helper");
 const { StatusCodes } = require('http-status-codes');
 
 exports.registerWorker = async (req, res) => {
-  
+
     //! Je vérifie si mon salarié existe par son email qui est unique */
 
     const { email } = req.body
@@ -49,13 +49,13 @@ exports.registerWorker = async (req, res) => {
                 "INSERT INTO salarie (civilite,nom,prenom,telephone,rue,cp,ville,email,mdp,nom_jeune_fille,num_ss, date_naissance, lieu_naissance,pays_naissance) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14) RETURNING *",
                 [civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, nom_jeune_fille, num_ss, date_naissance, lieu_naissance, pays_naissance]
             );
-            res.status(StatusCodes.OK).json({ "registerAWorker": registerWorker.rows[0], "token": tokens, "datas": worker, message: " A worker has beenn registered" })
+            res.status(StatusCodes.CREATED).json({ "registerAWorker": registerWorker.rows[0], "token": tokens, "datas": worker, message: " A worker has beenn registered" })
 
-            
+
 
         } catch (error) {
             // * ici grâce à mon trigger, mon message d'erreur est personnalisé et vient de ma bdd.
-            res.status(StatusCodes.FORBIDDEN).json({ message :error.message })
+            res.status(StatusCodes.FORBIDDEN).json({ message: error.message })
 
         }
     }
@@ -111,7 +111,7 @@ exports.registerSociety = async (req, res) => {
             "INSERT INTO entreprise (civilite,nom,prenom,telephone,rue,cp,ville,email,mdp,siret,raison_sociale,code_ape) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) RETURNING *",
             [civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, siret, raison_sociale, code_ape]
         );
-        res.status(StatusCodes.OK).json({ "addASociety": addSociety.rows[0], "token": tokens, message: "A society has been added" })
+        res.status(StatusCodes.CREATED).json({ "addASociety": addSociety.rows[0], "token": tokens, message: "A society has been added" })
 
 
     } catch (error) {

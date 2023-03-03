@@ -4,8 +4,8 @@ const pool = require("../../config");
 const bcrypt = require("bcrypt")
 const validator = require("validator")
 const { isEmail } = validator;
-const {jwtTokens} = require('../../helpers/auth_helper')
-const {StatusCodes} = require("http-status-codes");
+const { jwtTokens } = require('../../helpers/auth_helper')
+const { StatusCodes } = require("http-status-codes");
 
 //** Add a Worker */
 
@@ -33,7 +33,7 @@ exports.addWorker = async (req, res) => {
         //** Ensuite je créé s'il n'existe pas */
         try {
 
-            const { civilite, nom, prenom, telephone, rue, cp, ville, email,nom_jeune_fille, num_ss, date_naissance, lieu_naissance, pays_naissance } = req.body;
+            const { civilite, nom, prenom, telephone, rue, cp, ville, email, nom_jeune_fille, num_ss, date_naissance, lieu_naissance, pays_naissance } = req.body;
 
             //** ---- hash du mot de passe via bcrypt */
 
@@ -44,16 +44,16 @@ exports.addWorker = async (req, res) => {
 
             const worker = { email: req.body.email, utilisateur_id: req.body.utilisateur_id, role: req.body.role }
             // TODO ------------- le JWT --------------------- //
-    
+
             let tokens = jwtTokens(worker)
-        
+
             const addWorker = await pool.query(
                 "INSERT INTO salarie (civilite,nom,prenom,telephone,rue,cp,ville,email,mdp,nom_jeune_fille,num_ss, date_naissance, lieu_naissance,pays_naissance) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14) RETURNING *",
-                [civilite, nom, prenom, telephone, rue, cp, ville, email, mdp,nom_jeune_fille, num_ss, date_naissance, lieu_naissance, pays_naissance]
+                [civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, nom_jeune_fille, num_ss, date_naissance, lieu_naissance, pays_naissance]
             );
 
 
-            res.status(StatusCodes.OK).json({ "addAWorker": addWorker.rows[0],"tokens": tokens, "datas": worker, message: "A worker has been added" })
+            res.status(StatusCodes.CREATED).json({ "addAWorker": addWorker.rows[0], "tokens": tokens, "datas": worker, message: "A worker has been added" })
 
 
         } catch (error) {
@@ -107,7 +107,7 @@ exports.addSociety = async (req, res) => {
         // TODO ------------- le JWT --------------------- //
 
         let tokens = jwtTokens(society)
-  
+
         const addSociety = await pool.query(
             "INSERT INTO entreprise (civilite,nom,prenom,telephone,rue,cp,ville,email,mdp,siret,raison_sociale,code_ape) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) RETURNING *",
             [civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, siret, raison_sociale, code_ape]

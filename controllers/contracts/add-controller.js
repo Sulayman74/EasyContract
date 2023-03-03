@@ -3,6 +3,18 @@ const pool = require("../../config");
 
 //** Add a contract */
 
+/**
+ * Cette fonction permet d'ajouter un contrat dans la base de données.
+ * Elle récupère les informations sur le contrat à partir des données envoyées via la requête HTTP et les insère dans la table Contrat.
+ * Elle renvoie ensuite un message confirmant que le contrat a été ajouté et renvoie les informations sur le contrat et sur le salarié concerné.
+ * En cas d'erreur, un message d'erreur personnalisé est renvoyé grâce au trigger de la base de données.
+ *
+ * @async
+ * @param {Object} req - Objet contenant les informations sur la requête HTTP.
+ * @param {Object} res - Objet contenant les informations sur la réponse HTTP.
+ * @returns {json} - Informations sur le contrat et sur le salarié ajoutés.
+ */
+
 exports.addContract = async (req, res) => {
 
 
@@ -23,9 +35,9 @@ exports.addContract = async (req, res) => {
         salarie
         ON 
             contrat.fki_salarie = salarie.salarie_id`)
-        res.status(200).json({ "message": "a contract has been added", "contract": addContract.rows[0], "salarie": salarie })
+        res.status(StatusCodes.CREATED).json({ "message": "a contract has been added", "contract": addContract.rows[0], "salarie": salarie })
     } catch (error) {
-         // * ici grâce à mon trigger, mon message d'erreur est personnalisé et vient de ma bdd.
-        res.status(StatusCodes.FORBIDDEN).json({error : error.message})
+        // * ici grâce à mon trigger, mon message d'erreur est personnalisé et vient de ma bdd.
+        res.status(StatusCodes.FORBIDDEN).json({ error: error.message })
     }
 }

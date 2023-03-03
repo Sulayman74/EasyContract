@@ -1,15 +1,24 @@
 //** get one contract */
 
 const pool = require("../../config");
+const { StatusCodes } = require('http-status-codes')
 
-exports.getOne = async(req,res)=>{
+
+/**
+ * getOne
+ * Route handler for getting a single contrat
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ */
+
+exports.getOne = async (req, res) => {
     try {
-        const {id}=req.params
+        const { id } = req.params
         const getOne = await pool.query(
-            "SELECT contrat_id FROM contrat WHERE contrat_id=$1",[id]
+            "SELECT contrat_id FROM contrat WHERE contrat_id=$1", [id]
         )
-        res.status(200).json({"message":`You have chosen this contrat$ ${id}`, "the contract":getOne})
+        res.status(StatusCodes.OK).json({ "message": `You have chosen this contrat$ ${id}`, "the contract": getOne })
     } catch (error) {
-        console.error(error.message);
+        res.status(StatusCodes.BAD_REQUEST).json({ error: error.message })
     }
 }
