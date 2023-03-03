@@ -18,7 +18,7 @@ exports.loginSalarie = async (req, res) => {
 
         if (!isEmail(email)) {
             console.log("invalid email");
-            res.status(StatusCodes.UNAUTHORIZED).json({ "email": email, "message": "invalid email" })
+            res.status(StatusCodes.UNAUTHORIZED).json({ "email": email, error: "invalid email" })
             return false
         }
         if (login.rows.length === 0) return res.status(StatusCodes.UNAUTHORIZED).json({ error: "Email is incorrect" });
@@ -29,7 +29,7 @@ exports.loginSalarie = async (req, res) => {
 
         const clearPassword = await login.rows[0].mdp
         const validPassword = await bcrypt.compare(mdp, clearPassword);
-        if (!validPassword) return res.status(401).json({ error: "wrong password" })
+        if (!validPassword) return res.status(StatusCodes.UNAUTHORIZED).json({ error: "Wrong password" })
 
         const user = { email: login.rows[0].email, utilisateur_id: login.rows[0].salarie_id, role: login.rows[0].role, mdp: login.rows[0].mdp }
 
@@ -66,7 +66,7 @@ exports.loginSociety = async (req, res) => {
 
         const clearPassword = await login.rows[0].mdp
         const validPassword = await bcrypt.compare(mdp, clearPassword);
-        if (!validPassword) return res.status(401).json({ error: "wrong password" })
+        if (!validPassword) return res.status(StatusCodes.UNAUTHORIZED).json({ error: "wrong password" })
 
         const society = { email: login.rows[0].email, utilisateur_id: login.rows[0].entreprise_id, role: login.rows[0].role, mdp: login.rows[0].mdp }
 
