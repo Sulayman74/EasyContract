@@ -19,7 +19,7 @@ app.use('/api/contracts', contractRouter);
 
 // ! écoute du port
 
-app.listen(PORT || null, ()=> {
+app.listen(PORT || null, () => {
     console.log('le serveur est lancé')
 })
 
